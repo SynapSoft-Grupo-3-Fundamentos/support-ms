@@ -1,0 +1,31 @@
+services:
+  support-microservice:
+    image: support-microservice
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: support-microservice
+    ports:
+      - "8093:8093"
+    networks:
+      - app-network
+    depends_on:
+      - support-db
+    restart: always
+
+  support-db:
+    image: postgres:latest
+    container_name: support-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: support-db
+    ports:
+      - "5441:5441"
+    networks:
+      - app-network
+    restart: always
+
+networks:
+  app-network:
+    external: true
